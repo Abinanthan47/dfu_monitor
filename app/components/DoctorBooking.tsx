@@ -1,18 +1,18 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  StatusBar,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 
 export default function DoctorBooking() {
   const [patientName, setPatientName] = useState("");
@@ -34,7 +34,10 @@ export default function DoctorBooking() {
       !time ||
       !reason
     ) {
-      Alert.alert("Missing Information", "Please fill out all fields to book your appointment.");
+      Alert.alert(
+        "Missing Information",
+        "Please fill out all fields to book your appointment."
+      );
       return;
     }
     // For now, just display an alert. Replace with API call as needed.
@@ -53,17 +56,24 @@ export default function DoctorBooking() {
     setReason("");
   };
 
-  const renderInputField = (label, placeholder, value, setValue, keyboardType = "default", multiline = false) => {
+  const renderInputField = (
+    label,
+    placeholder,
+    value,
+    setValue,
+    keyboardType = "default",
+    multiline = false
+  ) => {
     const isActive = activeField === label;
-    
+
     return (
       <View style={styles.formGroup}>
         <Text style={styles.label}>{label}</Text>
         <TextInput
           style={[
-            styles.input, 
+            styles.input,
             multiline && styles.textArea,
-            isActive && styles.activeInput
+            isActive && styles.activeInput,
           ]}
           placeholder={placeholder}
           placeholderTextColor="#a8a8a8"
@@ -87,18 +97,38 @@ export default function DoctorBooking() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoid}
       >
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.header}>
             <Text style={styles.title}>Book Your Appointment</Text>
             <Text style={styles.subtitle}>Fill in your details below</Text>
           </View>
 
           <View style={styles.card}>
-            {renderInputField("Patient Name", "Enter your full name", patientName, setPatientName)}
-            {renderInputField("Email Address", "you@example.com", email, setEmail, "email-address")}
-            {renderInputField("Phone Number", "+91 (___) ___-____", phone, setPhone, "phone-pad")}
+            {renderInputField(
+              "Patient Name",
+              "Enter your full name",
+              patientName,
+              setPatientName
+            )}
+            {renderInputField(
+              "Email Address",
+              "you@example.com",
+              email,
+              setEmail,
+              "email-address"
+            )}
+            {renderInputField(
+              "Phone Number",
+              "+91 (___) ___-____",
+              phone,
+              setPhone,
+              "phone-pad"
+            )}
             {renderInputField("Select Doctor", "Dr. Dinesh", doctor, setDoctor)}
-            
+
             <View style={styles.dateTimeRow}>
               <View style={styles.dateField}>
                 {renderInputField("Date", "YYYY-MM-DD", date, setDate)}
@@ -107,8 +137,15 @@ export default function DoctorBooking() {
                 {renderInputField("Time", "HH:MM AM/PM", time, setTime)}
               </View>
             </View>
-            
-            {renderInputField("Reason for Visit", "Briefly describe your symptoms or reason for appointment", reason, setReason, "default", true)}
+
+            {renderInputField(
+              "Reason for Visit",
+              "Briefly describe your symptoms or reason for appointment",
+              reason,
+              setReason,
+              "default",
+              true
+            )}
 
             <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit}>
               <LinearGradient
@@ -120,9 +157,10 @@ export default function DoctorBooking() {
                 <Text style={styles.buttonText}>Schedule Appointment</Text>
               </LinearGradient>
             </TouchableOpacity>
-            
+
             <Text style={styles.disclaimer}>
-              By booking an appointment, you agree to our terms and privacy policy.
+              By booking an appointment, you agree to our terms and privacy
+              policy.
             </Text>
           </View>
         </ScrollView>
